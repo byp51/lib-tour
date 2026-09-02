@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+  <title>Building 360 Navigator</title>
+  <style>
+    /* =====================================================================
+       RESET / BASE
+       ===================================================================== */
+    *, ::before, ::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0f1117;
+      --surface:    #1a1d27;
+      --border:     rgba(255,255,255,0.08);
+      --accent:     #512888;
+      --accent-lit: #7a42c8;
+      --gold:       #f0ad00;
+      --text:       #e8e8ec;
+      --text-muted: #8b8d9a;
+      --radius:     6px;
+      --nav-h:      56px;
+      --panel-w:    280px;
+      --font:       system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      overflow: hidden;
+    }
+
+    /* =====================================================================
+       LAYOUT
+       ===================================================================== */
+    .app {
+      display: grid;
+      grid-template-rows: var(--nav-h) 1fr;
+      grid-template-columns: var(--panel-w) 1fr;
+      height: 100vh;
+    }
+
+    /* =====================================================================
+       TOP NAV
+       ===================================================================== */
+    .top-nav {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0 1.25rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+    }
+
+    .top-nav__logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .top-nav__logo-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .top-nav__logo-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: #fff;
+    }
+
+    .top-nav__divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+    }
+
+    .top-nav__location {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .top-nav__location strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .top-nav__breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    .top-nav__breadcrumb span { color: var(--text); }
+    .top-nav__breadcrumb .sep { opacity: 0.4; }
+
+    /* =====================================================================
+       SIDE PANEL — Room List
+       ===================================================================== */
+    .side-panel {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .side-panel__header {
+      padding: 1rem 1rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .side-panel__title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .side-panel__search {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 0.8rem;
+      padding: 0.4rem 0.6rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .side-panel__search:focus {
+      border-color: var(--accent-lit);
+    }
+
+    .room-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.5rem;
+      list-style: none;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .room-list__floor {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      padding: 0.75rem 0.5rem 0.25rem;
+    }
+
+    .room-list__item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.5rem 0.6rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.1s;
+      border: 1px solid transparent;
+    }
+
+    .room-list__item:hover {
+      background: rgba(255,255,255,0.04);
+    }
+
+    .room-list__item.active {
+      background: rgba(81,40,136,0.25);
+      border-color: rgba(81,40,136,0.5);
+    }
+
+    .room-list__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      flex-shrink: 0;
+      transition: background 0.1s;
+    }
+
+    .room-list__item.active .room-list__dot {
+      background: var(--gold);
+    }
+
+    .room-list__name {
+      font-size: 0.82rem;
+      flex: 1;
+    }
+
+    .room-list__item.active .room-list__name {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .room-list__tag {
+      font-size: 0.65rem;
+      background: rgba(255,255,255,0.06);
+      border-radius: 3px;
+      padding: 0.1rem 0.35rem;
+      color: var(--text-muted);
+    }
+
+    /* =====================================================================
+       VIEWER — Main Stage
+       ===================================================================== */
+    .viewer {
+      position: relative;
+      overflow: hidden;
+      background: #000;
+    }
+
+    /* Placeholder panorama — replace with real equirectangular image */
+    .viewer__panorama {
+      position: absolute;
+      top: 0;
+      left: 0;
+      /* Wide enough to simulate drag — real impl uses canvas/WebGL/A-Frame */
+      width: 300%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        #1a1530 0%,
+        #2a1f50 20%,
+        #1e2240 40%,
+        #131825 60%,
+        #221535 80%,
+        #1a1530 100%
+      );
+      transition: transform 0.05s linear;
+      will-change: transform;
+    }
+
+    /* Grid overlay to convey 3D space */
+    .viewer__panorama::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    /* Vignette */
+    .viewer__panorama::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%);
+    }
+
+    /* =====================================================================
+       HOTSPOT NAVIGATION ICONS
+       ===================================================================== */
+    .hotspot {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .hotspot__ring {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+      transition: transform 0.2s, background 0.2s, border-color 0.2s;
+      position: relative;
+    }
+
+    /* Pulse animation */
+    .hotspot__ring::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      opacity: 0.4;
+      animation: pulse 2.4s ease-out infinite;
+    }
+
+    @keyframes pulse {
+      0%   { transform: scale(1);   opacity: 0.4; }
+      70%  { transform: scale(1.5); opacity: 0;   }
+      100% { transform: scale(1.5); opacity: 0;   }
+    }
+
+    .hotspot:hover .hotspot__ring {
+      transform: scale(1.1);
+      background: rgba(81,40,136,0.7);
+      border-color: #fff;
+    }
+
+    .hotspot__ring svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--gold);
+      transition: fill 0.2s;
+    }
+
+    .hotspot:hover .hotspot__ring svg { fill: #fff; }
+
+    .hotspot__label {
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.2rem 0.5rem;
+      white-space: nowrap;
+      color: var(--text);
+      pointer-events: none;
+    }
+
+    /* =====================================================================
+       VIEWER CONTROLS (bottom bar)
+       ===================================================================== */
+    .viewer__controls {
+      position: absolute;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(15,17,23,0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.4rem 0.75rem;
+      z-index: 10;
+    }
+
+    .ctrl-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .ctrl-btn:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .ctrl-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .ctrl-divider {
+      width: 1px;
+      height: 18px;
+      background: var(--border);
+    }
+
+    .ctrl-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      padding: 0 0.25rem;
+      white-space: nowrap;
+    }
+
+    /* =====================================================================
+       VIEWER INFO OVERLAY (top-left)
+       ===================================================================== */
+    .viewer__info {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .viewer__room-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 0.25rem;
+    }
+
+    .viewer__room-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* =====================================================================
+       MINIMAP (top-right)
+       ===================================================================== */
+    .viewer__minimap {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 120px;
+      height: 90px;
+      background: rgba(15,17,23,0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      z-index: 10;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .minimap__label {
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      position: absolute;
+      top: 0.3rem;
+      left: 0.4rem;
+    }
+
+    /* Simple floor plan placeholder */
+    .minimap__floor {
+      width: 80px;
+      height: 60px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 2px;
+      position: relative;
+      margin-top: 8px;
+    }
+
+    .minimap__room {
+      position: absolute;
+      background: rgba(81,40,136,0.3);
+      border: 1px solid rgba(81,40,136,0.6);
+    }
+
+    /* Active position dot */
+    .minimap__you {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      top: 50%;
+      left: 40%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 6px var(--gold);
+    }
+
+    /* =====================================================================
+       TRANSITION OVERLAY
+       ===================================================================== */
+    .transition-overlay {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .transition-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* =====================================================================
+       RESPONSIVE
+       ===================================================================== */
+    @media (max-width: 768px) {
+      :root { --panel-w: 0px; }
+
+      .app {
+        grid-template-columns: 1fr;
+        grid-template-rows: var(--nav-h) 1fr;
+      }
+
+      .side-panel { display: none; }
+
+      .viewer__room-name { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ================================================================
+       TOP NAV
+       ================================================================ -->
+  <nav class="top-nav" aria-label="Building navigator">
+    <a class="top-nav__logo" href="#">
+      <span class="top-nav__logo-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="#fff" stroke-width="2"/>
+        </svg>
+      </span>
+      Building Tour
+    </a>
+    <span class="top-nav__divider" aria-hidden="true"></span>
+    <span class="top-nav__location">
+      Viewing: <strong id="current-room-nav">Main Lobby</strong>
+    </span>
+    <nav class="top-nav__breadcrumb" aria-label="Location">
+      <span>Floor 1</span>
+      <span class="sep" aria-hidden="true">›</span>
+      <span id="breadcrumb-room">Main Lobby</span>
+    </nav>
+  </nav>
+
+  <!-- ================================================================
+       SIDE PANEL
+       ================================================================ -->
+  <aside class="side-panel" aria-label="Room list">
+    <div class="side-panel__header">
+      <p class="side-panel__title">Rooms</p>
+      <input
+        class="side-panel__search"
+        type="search"
+        placeholder="Search rooms…"
+        aria-label="Search rooms"
+      />
+    </div>
+    <ul class="room-list" id="room-list" role="listbox" aria-label="Available rooms">
+
+      <li class="room-list__floor" aria-hidden="true">Floor 1</li>
+
+      <li class="room-list__item active" role="option" aria-selected="true" data-room="main-lobby" tabindex="0">
+        <span class="room-list__dot"></span>
+        <span class="room-list__name">Main Lobby</span>
+        <span class="room-list__tag">360°</span>
+      </li>
+      <li class="room-list__item" role="option" aria-selected="false" data-room="reception" tabindex="0">
+        <span class="room-list__dot"></span>
+        <span class="room-list__name">Reception</span>
+        <span class="room-list__tag">360°</span>
+      </li>
+      <li class="room-list__item" role="option" aria-selected="false" data-room="hallway-a" tabindex="0">
+        <span class="room-list__dot"></span>
+        <span class="room-list__name">Hallway A</span>
+        <span class="room-list__tag">360°</span>
+      </li>
+      <li class="room-list__item" role="option" aria-selected="false" data-room="conference-1" tabindex="0">
+        <span class="room-list__dot"></span>
+        <span class="room-list__name">Conference Room 1</span>
+        <span class="room-list__tag">360°</span>
+      </li>
+
+      <li class="room-list__floor" aria-hidden="true">Floor 2</li>
+
+      <li class="room-list__item" role="option" aria-selected="false" data-room="break-room" tabindex="0">
+        <span class="room-list__dot"></span>
+        <span class="room-list__name">Break Room</span>
+        <span class="room-list__tag">360°</span>
+      </li>
+      <li class="room-list__item" role="option" aria-selected="false" data-room="library" tabindex="0">
+        <span class="room-list__dot"></span>
+        <span class="room-list__name">Library</span>
+        <span class="room-list__tag">360°</span>
+      </li>
+      <li class="room-list__item" role="option" aria-selected="false" data-room="offices" tabindex="0">
+        <span class="room-list__dot"></span>
+        <span class="room-list__name">Open Offices</span>
+        <span class="room-list__tag">360°</span>
+      </li>
+
+    </ul>
+  </aside>
+
+  <!-- ================================================================
+       MAIN VIEWER
+       ================================================================ -->
+  <main class="viewer" aria-label="360 room viewer">
+
+    <!-- Panorama drag stage -->
+    <div id="panorama-viewer" style="width:100%;height:100%;"></div>
+      <div class="viewer__panorama" id="panorama"></div>
+
+      <!-- ============================================================
+           HOTSPOTS — Navigation icons placed over the panorama
+           Position with top/left % to place in the scene
+           ============================================================ -->
+      <button
+        class="hotspot"
+        style="top: 58%; left: 72%;"
+        data-target="reception"
+        aria-label="Go to Reception"
+      >
+        <span class="hotspot__ring" aria-hidden="true">
+          <!-- Arrow icon -->
+          <svg viewBox="0 0 24 24"><path d="M12 2l0 20M12 2l-5 5M12 2l5 5" stroke="#f0ad00" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+        </span>
+        <span class="hotspot__label">Reception →</span>
+      </button>
+
+      <button
+        class="hotspot"
+        style="top: 55%; left: 28%;"
+        data-target="hallway-a"
+        aria-label="Go to Hallway A"
+      >
+        <span class="hotspot__ring" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2l0 20M12 2l-5 5M12 2l5 5" stroke="#f0ad00" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+        </span>
+        <span class="hotspot__label">Hallway A →</span>
+      </button>
+
+      <button
+        class="hotspot"
+        style="top: 62%; left: 50%;"
+        data-target="conference-1"
+        aria-label="Go to Conference Room 1"
+      >
+        <span class="hotspot__ring" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2l0 20M12 2l-5 5M12 2l5 5" stroke="#f0ad00" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+        </span>
+        <span class="hotspot__label">Conference Room 1 →</span>
+      </button>
+
+    </div><!-- /stage -->
+
+    <!-- Room name overlay -->
+    <div class="viewer__info" aria-live="polite">
+      <p class="viewer__room-name" id="room-title">Main Lobby</p>
+      <p class="viewer__room-meta" id="room-meta">Floor 1 · Drag to look around</p>
+    </div>
+
+    <!-- Minimap -->
+    <div class="viewer__minimap" aria-hidden="true">
+      <span class="minimap__label">Floor 1</span>
+      <div class="minimap__floor">
+        <!-- Placeholder rooms on minimap -->
+        <div class="minimap__room" style="left:0;top:0;width:40%;height:55%;"></div>
+        <div class="minimap__room" style="left:42%;top:0;width:58%;height:55%;"></div>
+        <div class="minimap__room" style="left:0;top:57%;width:100%;height:43%;"></div>
+        <div class="minimap__you" id="minimap-you"></div>
+      </div>
+    </div>
+
+    <!-- Bottom controls -->
+    <div class="viewer__controls" role="toolbar" aria-label="Viewer controls">
+      <button class="ctrl-btn" id="btn-zoom-out" aria-label="Zoom out" title="Zoom out">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
+      </button>
+      <button class="ctrl-btn" id="btn-zoom-in" aria-label="Zoom in" title="Zoom in">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <span class="ctrl-divider" aria-hidden="true"></span>
+      <button class="ctrl-btn" id="btn-reset" aria-label="Reset view" title="Reset view">
+        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
+      <span class="ctrl-divider" aria-hidden="true"></span>
+      <span class="ctrl-label" id="zoom-label">100%</span>
+    </div>
+
+    <!-- Transition fade overlay -->
+    <div class="transition-overlay" id="transition-overlay" aria-hidden="true"></div>
+
+  </main><!-- /viewer -->
+
+</div><!-- /app -->
+
+<script>
+  /* ==================================================================
+     ROOM DATA
+     Add your rooms here. Replace bgColor with a real panorama image:
+       bg: 'url("photos/lobby.jpg") center/cover'
+     ================================================================== */
+  const rooms = {
+    'main-lobby': {
+      name: 'Main Lobby',
+      floor: 'Floor 1',
+      image: "https://assets.lib.k-state.edu/libguides/360photos/library/f1_sunflower_entrance.jpg",
+      hotspots: [
+        { target: 'reception',    label: 'Reception →',       pitch: -10, yaw: 45 },
+        { target: 'hallway-a',    label: 'Hallway A →',       pitch: 0, yaw: 90 },
+        { target: 'conference-1', label: 'Conference Room 1 →', pitch: 0, yaw: 180 },
+      ]
+    },
+    'reception': {
+      name: 'Reception',
+      floor: 'Floor 1',
+      bg: 'linear-gradient(135deg,#0d1f2d 0%,#1a3a4a 30%,#0d2233 60%,#091a25 100%)',
+      hotspots: [
+        { target: 'main-lobby', label: '← Main Lobby', top: '56%', left: '30%' },
+        { target: 'hallway-a',  label: 'Hallway A →',  top: '60%', left: '65%' },
+      ]
+    },
+    'hallway-a': {
+      name: 'Hallway A',
+      floor: 'Floor 1',
+      bg: 'linear-gradient(135deg,#1a1a1a 0%,#2a2a3a 40%,#1a1a2a 80%,#111 100%)',
+      hotspots: [
+        { target: 'main-lobby',   label: '← Main Lobby',   top: '56%', left: '20%' },
+        { target: 'conference-1', label: 'Conference Rm →', top: '58%', left: '75%' },
+        { target: 'break-room',   label: 'Break Room ↑',    top: '40%', left: '50%' },
+      ]
+    },
+    'conference-1': {
+      name: 'Conference Room 1',
+      floor: 'Floor 1',
+      bg: 'linear-gradient(135deg,#1f1a0d 0%,#3a2f1a 30%,#2a2010 60%,#1a1508 100%)',
+      hotspots: [
+        { target: 'hallway-a', label: '← Hallway A', top: '60%', left: '35%' },
+      ]
+    },
+    'break-room': {
+      name: 'Break Room',
+      floor: 'Floor 2',
+      bg: 'linear-gradient(135deg,#0d1f0d 0%,#1a3a1a 30%,#0d250d 60%,#081508 100%)',
+      hotspots: [
+        { target: 'library', label: 'Library →', top: '57%', left: '70%' },
+        { target: 'offices', label: 'Offices →', top: '57%', left: '30%' },
+      ]
+    },
+    'library': {
+      name: 'Library',
+      floor: 'Floor 2',
+      bg: 'linear-gradient(135deg,#1a0d1f 0%,#2f1a3a 30%,#200d2a 60%,#150818 100%)',
+      hotspots: [
+        { target: 'break-room', label: '← Break Room', top: '58%', left: '35%' },
+        { target: 'offices',    label: 'Offices →',     top: '58%', left: '65%' },
+      ]
+    },
+    'offices': {
+      name: 'Open Offices',
+      floor: 'Floor 2',
+      bg: 'linear-gradient(135deg,#0d1a1f 0%,#1a2f3a 30%,#0d2028 60%,#081520 100%)',
+      hotspots: [
+        { target: 'break-room', label: '← Break Room', top: '57%', left: '25%' },
+        { target: 'library',    label: '← Library',    top: '57%', left: '60%' },
+      ]
+    },
+  };
+
+  /* ==================================================================
+     STATE
+     ================================================================== */
+  let currentRoom  = 'main-lobby';
+  let isDragging   = false;
+  let dragStartX   = 0;
+  let panOffset    = 0;   // current panorama X offset in px
+  let panAtDragStart = 0;
+  let zoom         = 1;
+  const MIN_ZOOM   = 0.8;
+  const MAX_ZOOM   = 2.0;
+
+  /* ==================================================================
+     ELEMENT REFS
+     ================================================================== */
+  const stage      = document.getElementById('stage');
+  const panorama   = document.getElementById('panorama');
+  const roomTitle  = document.getElementById('room-title');
+  const roomMeta   = document.getElementById('room-meta');
+  const navLabel   = document.getElementById('current-room-nav');
+  const breadcrumb = document.getElementById('breadcrumb-room');
+  const overlay    = document.getElementById('transition-overlay');
+  const zoomLabel  = document.getElementById('zoom-label');
+
+  /* ==================================================================
+     NAVIGATE TO ROOM
+     ================================================================== */
+  function navigateTo(roomId) {
+    if (roomId === currentRoom || !rooms[roomId]) return;
+
+    // Fade out
+    overlay.classList.add('active');
+
+    setTimeout(() => {
+      currentRoom = roomId;
+      loadRoom(roomId);
+
+      // Fade in
+      setTimeout(() => overlay.classList.remove('active'), 50);
+    }, 300);
+  }
+
+  let viewer = null;
+
+function loadRoom(roomId) {
+  const room = rooms[roomId];
+  if (!room) return;
+
+  // Build pannellum hotspot config
+  const hotspotConfig = room.hotspots.map(hs => ({
+    type: 'scene',           // 'scene' makes it a navigation hotspot
+    pitch: hs.pitch,
+    yaw: hs.yaw,
+    sceneId: hs.target,      // links to another scene by ID
+    text: hs.label,
+  }));
+
+  // Destroy previous viewer if one exists
+  if (viewer) viewer.destroy();
+
+  viewer = pannellum.viewer('panorama-viewer', {
+    type: 'equirectangular',
+    panorama: room.image,
+    autoLoad: true,
+    compass: false,
+    showZoomCtrl: false,      // use your own zoom buttons
+    showFullscreenCtrl: false,
+    hotSpots: hotspotConfig,
+    // Called when a hotspot is clicked
+    onHotspotClick: (e, args) => navigateTo(args.sceneId),
+  });
+
+  // Update your UI labels as before
+  roomTitle.textContent  = room.name;
+  roomMeta.textContent   = `${room.floor} · Drag to look around`;
+  navLabel.textContent   = room.name;
+  breadcrumb.textContent = room.name;
+}
+
+  /* ==================================================================
+     HOTSPOTS
+     ================================================================== */
+  function buildHotspots(hotspots) {
+    // Remove existing hotspots
+    stage.querySelectorAll('.hotspot').forEach(el => el.remove());
+
+    hotspots.forEach(hs => {
+      const btn = document.createElement('button');
+      btn.className = 'hotspot';
+      btn.style.top  = hs.top;
+      btn.style.left = hs.left;
+      btn.dataset.target = hs.target;
+      btn.setAttribute('aria-label', `Go to ${rooms[hs.target]?.name || hs.target}`);
+      btn.innerHTML = `
+        <span class="hotspot__ring" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2l0 20M12 2l-5 5M12 2l5 5" stroke="#f0ad00" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+        </span>
+        <span class="hotspot__label">${hs.label}</span>
+      `;
+      btn.addEventListener('click', () => navigateTo(hs.target));
+      btn.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          navigateTo(hs.target);
+        }
+      });
+      stage.appendChild(btn);
+    });
+  }
+
+  /* ==================================================================
+     DRAG TO PAN
+     ================================================================== */
+  function applyPan() {
+    // Clamp pan so image doesn't go out of bounds
+    const maxPan = (panorama.offsetWidth - stage.offsetWidth) / 2;
+    panOffset = Math.max(-maxPan, Math.min(maxPan, panOffset));
+    panorama.style.transform = `translateX(${panOffset}px) scaleX(${zoom})`;
+  }
+
+  stage.addEventListener('mousedown', e => {
+    if (e.target.closest('.hotspot')) return;
+    isDragging = true;
+    dragStartX = e.clientX;
+    panAtDragStart = panOffset;
+    stage.style.cursor = 'grabbing';
+  });
+
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    panOffset = panAtDragStart + (e.clientX - dragStartX);
+    applyPan();
+  });
+
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+    stage.style.cursor = 'grab';
+  });
+
+  // Touch support
+  stage.addEventListener('touchstart', e => {
+    if (e.target.closest('.hotspot')) return;
+    dragStartX = e.touches[0].clientX;
+    panAtDragStart = panOffset;
+  }, { passive: true });
+
+  stage.addEventListener('touchmove', e => {
+    panOffset = panAtDragStart + (e.touches[0].clientX - dragStartX);
+    applyPan();
+  }, { passive: true });
+
+  /* ==================================================================
+     ZOOM CONTROLS
+     ================================================================== */
+  function setZoom(val) {
+    zoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, val));
+    zoomLabel.textContent = Math.round(zoom * 100) + '%';
+    applyPan();
+  }
+
+  document.getElementById('btn-zoom-in').addEventListener('click',  () => setZoom(zoom + 0.15));
+  document.getElementById('btn-zoom-out').addEventListener('click', () => setZoom(zoom - 0.15));
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    panOffset = 0;
+    setZoom(1);
+  });
+
+  // Scroll to zoom
+  stage.addEventListener('wheel', e => {
+    e.preventDefault();
+    setZoom(zoom - e.deltaY * 0.001);
+  }, { passive: false });
+
+  /* ==================================================================
+     ROOM LIST CLICKS
+     ================================================================== */
+  document.getElementById('room-list').addEventListener('click', e => {
+    const item = e.target.closest('.room-list__item');
+    if (item) navigateTo(item.dataset.room);
+  });
+
+  document.getElementById('room-list').addEventListener('keydown', e => {
+    const item = e.target.closest('.room-list__item');
+    if (item && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      navigateTo(item.dataset.room);
+    }
+  });
+
+  /* ==================================================================
+     SEARCH FILTER
+     ================================================================== */
+  document.querySelector('.side-panel__search').addEventListener('input', e => {
+    const q = e.target.value.toLowerCase();
+    document.querySelectorAll('.room-list__item').forEach(item => {
+      const name = item.querySelector('.room-list__name').textContent.toLowerCase();
+      item.style.display = name.includes(q) ? '' : 'none';
+    });
+  });
+
+  /* ==================================================================
+     INIT
+     ================================================================== */
+  loadRoom('main-lobby');
+
+  document.getElementById('btn-zoom-in').addEventListener('click', () => {
+    viewer.setHfov(viewer.getHfov() - 10);  // lower HFOV = zoom in
+  });
+  document.getElementById('btn-zoom-out').addEventListener('click', () => {
+    viewer.setHfov(viewer.getHfov() + 10);  // higher HFOV = zoom out
+  });
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    viewer.setHfov(100);  // default field of view
+    viewer.setPitch(0);
+    viewer.setYaw(0);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <style type="text/css">
+        #panorama {
+            height: 500px;
+            width: 750px;
+
+        }
+
+        @media (max-width: 500px) {
+
+            #panorama {
+                height: 200px;
+                width: 250px;
+
+            }
+
+        }
+
+        div.pnlm-tooltip span {
+            background-color: rgba(255, 255, 255, 0.7) !important;
+            color: #000000 !important;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="panorama"></div>
+    <script>
+        pannellum.viewer('panorama', {
+            "default": {
+                "firstScene": "Floor1A",
+                "sceneFadeDuration": 1000
+
+            },
+
+            "scenes": {
+                "Floor1A": {
+                    "title": "Sunflower Entrance",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": 0,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f1_sunflower_entrance.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -6.31,
+                            "yaw": 8.72,
+                            "type": "info",
+                            "text": "Library Help & Information Desk"
+                        },
+                        {
+                            "pitch": -3.04,
+                            "yaw": 124.65,
+                            "type": "info",
+                            "text": "Elevator to all 5 Floors"
+                        },
+                        {
+                            "pitch": -3.04,
+                            "yaw": 86.14,
+                            "type": "scene",
+                            "text": "To Cornerstone Cafe",
+                            "sceneId": "Floor1B"
+                        },
+                        {
+                            "pitch": -4.14,
+                            "yaw": -33.39,
+                            "type": "scene",
+                            "text": "To Collaboration Rooms",
+                            "sceneId": "Floor1C"
+                        },
+                        {
+                            "pitch": -2.09,
+                            "yaw": -67.39,
+                            "type": "scene",
+                            "text": "To Big Collaboration Rooms",
+                            "sceneId": "Floor1D"
+                        },
+                        {
+                            "pitch": -2.75,
+                            "yaw": -220.68,
+                            "type": "scene",
+                            "text": "To Floor 2",
+                            "sceneId": "Floor2B"
+                        }
+
+
+                    ]
+                },
+
+                "Floor1B": {
+                    "title": "Joyce and Joe's Cornerstone Cafe",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f1_cafe.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -0.86,
+                            "yaw": -17.01,
+                            "type": "info",
+                            "text": "Grab a quick snack or drink with Grab & Go options."
+                        },
+                        {
+                            "pitch": -6.36,
+                            "yaw": -35.65,
+                            "type": "info",
+                            "text": "Get freshly made food, coffee, or tea from the Coffee Bar. "
+                        },
+                        {
+                            "pitch": -5.89,
+                            "yaw": -174.68,
+                            "type": "scene",
+                            "text": "To Sunflower Entrance",
+                            "sceneId": "Floor1A"
+                        },
+                        {
+                            "pitch": -1.62,
+                            "yaw": -112.04,
+                            "type": "scene",
+                            "text": "To Collaboration Rooms",
+                            "sceneId": "Floor1C"
+                        }
+
+                    ]
+                },
+                "Floor1C": {
+                    "title": "Collaboration Rooms",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f1_collab_rooms.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -2.71,
+                            "yaw": -4.68,
+                            "type": "info",
+                            "text": "Reserve a Collaboration Room",
+                            "URL": "https://lib.k-state.edu/libraries-hours/hale-library/room-reservations/"
+                        },
+                        {
+                            "pitch": -4.24,
+                            "yaw": -271.86,
+                            "type": "scene",
+                            "text": "To Sunflower Entrance",
+                            "sceneId": "Floor1A"
+                        },
+                        {
+                            "pitch": -5.15,
+                            "yaw": -334.28,
+                            "type": "scene",
+                            "text": "To Cornerstone Cafe",
+                            "sceneId": "Floor1B"
+                        },
+                        {
+                            "pitch": -5.76,
+                            "yaw": -212.88,
+                            "type": "scene",
+                            "text": "To Big Collaboration Rooms",
+                            "sceneId": "Floor1D"
+                        }
+
+                    ]
+                },
+                "Floor1D": {
+                    "title": "Large Collaboration Rooms",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f1_big_collab_rooms.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -6.36,
+                            "yaw": 186.36,
+                            "type": "info",
+                            "text": "Reserve a Collaboration Room",
+                            "URL": "https://lib.k-state.edu/libraries-hours/hale-library/room-reservations/"
+                        },
+                        {
+                            "pitch": -1.77,
+                            "yaw": 270.08,
+                            "type": "info",
+                            "text": "Stairs"
+                        },
+                        {
+                            "pitch": -1.77,
+                            "yaw": 91.57,
+                            "type": "scene",
+                            "text": "To Sunflower Entrance",
+                            "sceneId": "Floor1A"
+                        },
+                        {
+                            "pitch": 0.36,
+                            "yaw": 54.9,
+                            "type": "scene",
+                            "text": "To Collaboration Rooms",
+                            "sceneId": "Floor1C"
+                        }
+
+                    ]
+                },
+                "Floor2B": {
+                    "title": "Help Desk",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f2_main.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -1.77,
+                            "yaw": 125.27,
+                            "type": "info",
+                            "text": "IT Help Desk",
+                            "URL": "https://www.k-state.edu/it/helpdesk/"
+                        },
+                        {
+                            "pitch": -3.31,
+                            "yaw": 167.13,
+                            "type": "info",
+                            "text": "Library Help Desk",
+                            "URL": "https://lib.k-state.edu/libraries-hours/hours/"
+                        },
+                        {
+                            "pitch": -1.47,
+                            "yaw": 256.49,
+                            "type": "info",
+                            "text": "Printers",
+                            "URL": "https://www.k-state.edu/it/labs/printing.html"
+                        },
+                        {
+                            "pitch": -3.92,
+                            "yaw": -304.07,
+                            "type": "info",
+                            "text": "Computers for use"
+                        },
+                        {
+                            "pitch": -2.09,
+                            "yaw": -42.28,
+                            "type": "scene",
+                            "text": "To Floor 1",
+                            "sceneId": "Floor1A"
+                        },
+                        {
+                            "pitch": -2.70,
+                            "yaw": -83.22,
+                            "type": "scene",
+                            "text": "To Printing and Elevators",
+                            "sceneId": "Floor2C"
+                        },
+                        {
+                            "pitch": -2.39,
+                            "yaw": -24.56,
+                            "type": "scene",
+                            "text": "To Floor 3",
+                            "sceneId": "Floor3A"
+                        }
+
+                    ]
+                },
+                "Floor2C": {
+                    "title": "Printing and Elevators",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_printers.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -4.60,
+                            "yaw": -78.41,
+                            "type": "info",
+                            "text": "Printers",
+                            "URL": "https://www.k-state.edu/it/labs/printing.html"
+                        },
+                        {
+                            "pitch": -10.48,
+                            "yaw": -20.80,
+                            "type": "info",
+                            "text": "Computers for Use"
+                        },
+                        {
+                            "pitch": -3.13,
+                            "yaw": 80.32,
+                            "type": "info",
+                            "text": "Elevator & Stairs"
+                        },
+                        {
+                            "pitch": -2.64,
+                            "yaw": 4.63,
+                            "type": "scene",
+                            "text": "To Open Computers",
+                            "sceneId": "Floor2D"
+                        },
+                        {
+                            "pitch": -3.86,
+                            "yaw": -101.42,
+                            "type": "scene",
+                            "text": "To Help Desk",
+                            "sceneId": "Floor2B"
+                        }
+
+                    ]
+                },
+
+                "Floor2D": {
+                    "title": "Open Computers",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_computers.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -2.38,
+                            "yaw": -148.08,
+                            "type": "info",
+                            "text": "Bathrooms"
+                        },
+                        {
+                            "pitch": -10.63,
+                            "yaw": -183.83,
+                            "type": "info",
+                            "text": "Computers for use"
+                        },
+                        {
+                            "pitch": -1.16,
+                            "yaw": 62.47,
+                            "type": "scene",
+                            "text": "To Printing and Elevators",
+                            "sceneId": "Floor2C"
+                        }
+
+                    ]
+                },
+                "Floor2E": {
+                    "title": "Innovation Lab 2nd Floor",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/innovation_lab/f2i_main.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -10.97,
+                            "yaw": -5.56,
+                            "type": "info",
+                            "text": "IT Checkout Desk",
+                            "URL": "https://www.k-state.edu/it/checkout/"
+                        },
+                        {
+                            "pitch": -3.169,
+                            "yaw": -146.02,
+                            "type": "info",
+                            "text": "High Tech Makerspace"
+                        },
+                        {
+                            "pitch": -9.63,
+                            "yaw": -105.11,
+                            "type": "info",
+                            "text": "AI Lab"
+                        },
+                        {
+                            "pitch": -5.47,
+                            "yaw": 36.63,
+                            "type": "scene",
+                            "text": "To Help Desk",
+                            "sceneId": "Floor2B"
+                        },
+                        {
+                            "pitch": -6.47,
+                            "yaw": 36.63,
+                            "type": "scene",
+                            "text": "To FabSpace",
+                            "sceneId": "Floor2F"
+                        }
+
+                    ]
+                },
+                "Floor2F": {
+                    "title": "FabSpace",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/innovation_lab/f2i_fabspace.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -10.97,
+                            "yaw": -5.56,
+                            "type": "info",
+                            "text": "IT Checkout Desk",
+                            "URL": "https://www.k-state.edu/it/checkout/"
+                        },
+                        {
+                            "pitch": -3.169,
+                            "yaw": -146.02,
+                            "type": "info",
+                            "text": "High Tech Makerspace"
+                        },
+                        {
+                            "pitch": -9.63,
+                            "yaw": -105.11,
+                            "type": "info",
+                            "text": "AI Lab"
+                        },
+                        {
+                            "pitch": -5.47,
+                            "yaw": 36.63,
+                            "type": "scene",
+                            "text": "To Innovation Lab Floor 2",
+                            "sceneId": "Floor2E"
+                        }
+
+                    ]
+                },
+                "Floor3A": {
+                    "title": "Books and Study Space",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_middle_of_shelves.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -3.03,
+                            "yaw": 139.38,
+                            "type": "info",
+                            "text": "Checkout A Book",
+                            "URL": "https://lib.k-state.edu/services-support/borrow/"
+                        },
+                        {
+                            "pitch": 1.25,
+                            "yaw": 35.19,
+                            "type": "scene",
+                            "text": "To Floor 2",
+                            "sceneId": "Floor2B"
+                        },
+                        {
+                            "pitch": -0.069,
+                            "yaw": 80.57,
+                            "type": "scene",
+                            "text": "To Study Furnature",
+                            "sceneId": "Floor3B"
+                        },
+                        {
+                            "pitch": -1.38,
+                            "yaw": 236.51,
+                            "type": "scene",
+                            "text": "To Great Room East",
+                            "sceneId": "Floor3D"
+                        },
+                        {
+                            "pitch": -4.35,
+                            "yaw": 309.26,
+                            "type": "scene",
+                            "text": "To Maps and Computers",
+                            "sceneId": "Floor3E"
+                        }
+
+                    ]
+                },
+                "Floor3B": {
+                    "title": "Study Furniture",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_seating.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -8.45,
+                            "yaw": 130.60,
+                            "type": "info",
+                            "text": "Seating for individuals and groups"
+                        },
+                        {
+                            "pitch": -0.75,
+                            "yaw": 86.60,
+                            "type": "info",
+                            "text": "Stairs"
+                        },
+                        {
+                            "pitch": -4.92,
+                            "yaw": 273.99,
+                            "type": "scene",
+                            "text": "To Books and Study Space",
+                            "sceneId": "Floor3A"
+                        },
+                        {
+                            "pitch": -1.39,
+                            "yaw": 174.28,
+                            "type": "scene",
+                            "text": "To Great Room East",
+                            "sceneId": "Floor3D"
+                        }
+
+                    ]
+                },
+                "Floor3C": {
+                    "title": "Great Room West",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_great_room_west.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -1.14,
+                            "yaw": 158.03,
+                            "type": "scene",
+                            "text": "To Great Room East",
+                            "sceneId": "Floor3D"
+                        }
+
+                    ]
+                },
+
+                "Floor3D": {
+                    "title": "Great Room East",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "yaw": 5,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_great_room_east.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -10.72,
+                            "yaw": 239.44,
+                            "type": "info",
+                            "text": "Quiet Zone Study Space"
+                        },
+                        {
+                            "pitch": -3.47,
+                            "yaw": 179.73,
+                            "type": "scene",
+                            "text": "To Great Room West",
+                            "sceneId": "Floor3C"
+                        },
+                        {
+                            "pitch": -4.79,
+                            "yaw": 57.99,
+                            "type": "scene",
+                            "text": "To Study Furniture",
+                            "sceneId": "Floor3B"
+                        },
+                        {
+                            "pitch": 0.81,
+                            "yaw": 49.74,
+                            "type": "scene",
+                            "text": "Books and Study Space",
+                            "sceneId": "Floor3A"
+                        }
+                    ]
+                },
+                "Floor3E": {
+                    "title": "Maps and Computers",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_maps.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -9.52,
+                            "yaw": -119.32,
+                            "type": "info",
+                            "text": "Computers for use"
+                        },
+                        {
+                            "pitch": -4.95,
+                            "yaw": 52.35,
+                            "type": "info",
+                            "text": "Maps"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "Books and Study Space",
+                            "sceneId": "Floor3A"
+                        }
+
+                    ]
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>
