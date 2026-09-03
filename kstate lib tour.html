@@ -34,7 +34,7 @@
 <body>
     <div id="panorama"></div>
     <script>
-        pannellum.viewer('panorama', {
+        const viewer = pannellum.viewer('panorama', {
             "default": {
                 "firstScene": "Floor1A",
                 "sceneFadeDuration": 1000
@@ -86,13 +86,19 @@
                             "sceneId": "Floor1D"
                         },
                         {
+                            "pitch": -5.87,
+                            "yaw": 47.49,
+                            "type": "scene",
+                            "text": "Test Scene",
+                            "sceneId": "Floor1E"
+                        },
+                        {
                             "pitch": -2.75,
                             "yaw": -220.68,
                             "type": "scene",
                             "text": "To Floor 2",
                             "sceneId": "Floor2B"
                         }
-
 
                     ]
                 },
@@ -210,6 +216,45 @@
                         {
                             "pitch": 0.36,
                             "yaw": 54.9,
+                            "type": "scene",
+                            "text": "To Collaboration Rooms",
+                            "sceneId": "Floor1C"
+                        }
+
+                    ]
+                },
+                "Floor1E": {
+                    "title": "Test Scene",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -5.58,
+                    "yaw": 49.79,
+                    "type": "equirectangular",
+                    "panorama": "https://raw.githubusercontent.com/byp51/lib-tour/refs/heads/main/0b76e464-e1dd-44b4-b1ef-0ee547eeb031.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -0.86,
+                            "yaw": -17.01,
+                            "type": "info",
+                            "text": "Grab a quick snack or drink with Grab & Go options."
+                        },
+                        {
+                            "pitch": -6.36,
+                            "yaw": -35.65,
+                            "type": "info",
+                            "text": "Get freshly made food, coffee, or tea from the Coffee Bar. "
+                        },
+                        {
+                            "pitch": -5.89,
+                            "yaw": -174.68,
+                            "type": "scene",
+                            "text": "To Sunflower Entrance",
+                            "sceneId": "Floor1A"
+                        },
+                        {
+                            "pitch": -1.62,
+                            "yaw": -112.04,
                             "type": "scene",
                             "text": "To Collaboration Rooms",
                             "sceneId": "Floor1C"
@@ -621,6 +666,10 @@
                     ]
                 }
             }
+        });
+        viewer.on('mousedown', function(event) {
+            const coords = viewer.mouseEventToCoords(event);
+            console.log('pitch:', coords[0], 'yaw:', coords[1]);
         });
     </script>
 
