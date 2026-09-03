@@ -28,12 +28,39 @@
             color: #000000 !important;
             font-size: 15px;
         }
+
+        /* Accessibility: visible focus indicator for keyboard users */
+        .pnlm-hotspot:focus {
+            outline: 3px solid #4da6ff;
+            outline-offset: 2px;
+        }
+
+        .custom-hotspot {
+            width: 32px;
+            height: 32px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            cursor: pointer;
+        }
+        .hotspot-up {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="%234da6ff" stroke="white" stroke-width="1.5"/><path d="M12 16V8M8 12l4-4 4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        }
+        .hotspot-down {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="%234da6ff" stroke="white" stroke-width="1.5"/><path d="M12 8v8M8 12l4 4 4-4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        }
+        .hotspot-left {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="%234da6ff" stroke="white" stroke-width="1.5"/><path d="M16 12H8M12 8l-4 4 4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        }
+        .hotspot-right {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="%234da6ff" stroke="white" stroke-width="1.5"/><path d="M8 12h8M12 8l4 4-4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        }
     </style>
 </head>
 
 <body>
     <div id="panorama"></div>
     <script>
+        // When done finding pitch and yaw, remove "const viewer ="
         const viewer = pannellum.viewer('panorama', {
             "default": {
                 "firstScene": "Floor1A",
@@ -56,7 +83,7 @@
                             "pitch": -6.31,
                             "yaw": 8.72,
                             "type": "info",
-                            "text": "Library Help & Information Desk"
+                            "text": "Library Help & Information Desk",
                         },
                         {
                             "pitch": -3.04,
@@ -97,7 +124,8 @@
                             "yaw": -220.68,
                             "type": "scene",
                             "text": "To Floor 2",
-                            "sceneId": "Floor2B"
+                            "sceneId": "Floor2B",
+                            "cssClass": "custom-hotspot hotspot-down"
                         }
 
                     ]
@@ -402,91 +430,6 @@
 
                     ]
                 },
-                "Floor2E": {
-                    "title": "Innovation Lab 2nd Floor",
-                    "autoLoad": true,
-                    "hfov": 110,
-                    "pitch": -3,
-                    "yaw": 117,
-                    "type": "equirectangular",
-                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/innovation_lab/f2i_main.jpg",
-                    //"hotSpotDebug": true,
-                    "hotSpots": [
-                        {
-                            "pitch": -10.97,
-                            "yaw": -5.56,
-                            "type": "info",
-                            "text": "IT Checkout Desk",
-                            "URL": "https://www.k-state.edu/it/checkout/"
-                        },
-                        {
-                            "pitch": -3.169,
-                            "yaw": -146.02,
-                            "type": "info",
-                            "text": "High Tech Makerspace"
-                        },
-                        {
-                            "pitch": -9.63,
-                            "yaw": -105.11,
-                            "type": "info",
-                            "text": "AI Lab"
-                        },
-                        {
-                            "pitch": -5.47,
-                            "yaw": 36.63,
-                            "type": "scene",
-                            "text": "To Help Desk",
-                            "sceneId": "Floor2B"
-                        },
-                        {
-                            "pitch": -6.47,
-                            "yaw": 36.63,
-                            "type": "scene",
-                            "text": "To FabSpace",
-                            "sceneId": "Floor2F"
-                        }
-
-                    ]
-                },
-                "Floor2F": {
-                    "title": "FabSpace",
-                    "autoLoad": true,
-                    "hfov": 110,
-                    "pitch": -3,
-                    "yaw": 117,
-                    "type": "equirectangular",
-                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/innovation_lab/f2i_fabspace.jpg",
-                    //"hotSpotDebug": true,
-                    "hotSpots": [
-                        {
-                            "pitch": -10.97,
-                            "yaw": -5.56,
-                            "type": "info",
-                            "text": "IT Checkout Desk",
-                            "URL": "https://www.k-state.edu/it/checkout/"
-                        },
-                        {
-                            "pitch": -3.169,
-                            "yaw": -146.02,
-                            "type": "info",
-                            "text": "High Tech Makerspace"
-                        },
-                        {
-                            "pitch": -9.63,
-                            "yaw": -105.11,
-                            "type": "info",
-                            "text": "AI Lab"
-                        },
-                        {
-                            "pitch": -5.47,
-                            "yaw": 36.63,
-                            "type": "scene",
-                            "text": "To Innovation Lab Floor 2",
-                            "sceneId": "Floor2E"
-                        }
-
-                    ]
-                },
                 "Floor3A": {
                     "title": "Books and Study Space",
                     "autoLoad": true,
@@ -667,10 +610,65 @@
                 }
             }
         });
+
+        //---------------------------------------------------------------
+        // For debugging: log the pitch and yaw of the mouse click
+        //---------------------------------------------------------------
         viewer.on('mousedown', function(event) {
             const coords = viewer.mouseEventToCoords(event);
             console.log('pitch:', coords[0], 'yaw:', coords[1]);
         });
+
+        // ---------------------------------------------------------------
+        // Accessibility: make hotspots reachable and operable by keyboard
+        // ---------------------------------------------------------------
+        // Pannellum rebuilds hotspot elements every time a scene loads, so
+        // rather than trying to catch a single event, we watch the
+        // panorama container for any new elements being added and enhance
+        // them as they appear.
+        function enhanceHotspotAccessibility() {
+            document.querySelectorAll('#panorama .pnlm-hotspot').forEach(function (el) {
+                if (el.hasAttribute('data-a11y-enhanced')) return;
+                el.setAttribute('data-a11y-enhanced', 'true');
+
+                // Join the normal Tab order and announce as a button
+                el.setAttribute('tabindex', '0');
+                el.setAttribute('role', 'button');
+
+                // Use the hotspot's own tooltip text as its accessible name
+                const label = el.textContent.trim();
+                if (label) {
+                    el.setAttribute('aria-label', label);
+                }
+
+                // Reveal the tooltip on keyboard focus the same way it
+                // reveals on mouse hover
+                el.addEventListener('focus', function () {
+                    el.dispatchEvent(new Event('mouseover'));
+                });
+                el.addEventListener('blur', function () {
+                    el.dispatchEvent(new Event('mouseout'));
+                });
+
+                // Enter or Space activates it, same as a mouse click
+                // (this covers scene jumps, URL links, and info tooltips)
+                el.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+                        e.preventDefault();
+                        el.click();
+                    }
+                });
+            });
+        }
+
+        const panoramaContainer = document.getElementById('panorama');
+        new MutationObserver(enhanceHotspotAccessibility).observe(panoramaContainer, {
+            childList: true,
+            subtree: true
+        });
+
+        // Run once immediately in case hotspots are already in the DOM
+        enhanceHotspotAccessibility();
     </script>
 
 </body>
