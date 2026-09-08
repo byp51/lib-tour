@@ -773,7 +773,7 @@
                     ]
                 },
                 "Floor3A": {
-                    "title": "Books and Study Space",
+                    "title": "Study Area",
                     "autoLoad": true,
                     "hfov": 110,
                     "pitch": -3,
@@ -786,7 +786,7 @@
                             "pitch": -3.03,
                             "yaw": 139.38,
                             "type": "info",
-                            "text": "Checkout A Book",
+                            "text": "Checkout any of these Books",
                             "URL": "https://lib.k-state.edu/services-support/borrow/"
                         },
                         {
@@ -795,6 +795,13 @@
                             "type": "scene",
                             "text": "To Floor 2",
                             "sceneId": "Floor2B"
+                        },
+                        {
+                            "pitch": 1.25,
+                            "yaw": 35.19,
+                            "type": "scene",
+                            "text": "To Floor 4",
+                            "sceneId": "Floor4A"
                         },
                         {
                             "pitch": -0.069,
@@ -808,14 +815,14 @@
                             "yaw": 236.51,
                             "type": "scene",
                             "text": "To Great Room East",
-                            "sceneId": "Floor3D"
+                            "sceneId": "Floor3C"
                         },
                         {
                             "pitch": -4.35,
                             "yaw": 309.26,
                             "type": "scene",
-                            "text": "To Maps and Computers",
-                            "sceneId": "Floor3E"
+                            "text": "To Book Stacks E",
+                            "sceneId": "Floor3F"
                         }
 
                     ]
@@ -834,29 +841,35 @@
                             "pitch": -8.45,
                             "yaw": 130.60,
                             "type": "info",
-                            "text": "Seating for individuals and groups"
+                            "text": "Any Graduate Student can check out these study rooms"
                         },
                         {
-                            "pitch": -0.75,
-                            "yaw": 86.60,
+                            "pitch": -8.45,
+                            "yaw": 130.60,
                             "type": "info",
-                            "text": "Stairs"
+                            "text": "Each Cubicle includes an outlet"
                         },
                         {
                             "pitch": -4.92,
                             "yaw": 273.99,
                             "type": "scene",
-                            "text": "To Books and Study Space",
+                            "text": "To Great Room East",
+                            "sceneId": "Floor3C"
+                        },
+                        {
+                            "pitch": -1.39,
+                            "yaw": 174.28,
+                            "type": "scene",
+                            "text": "To Study Area",
                             "sceneId": "Floor3A"
                         },
                         {
                             "pitch": -1.39,
                             "yaw": 174.28,
                             "type": "scene",
-                            "text": "To Great Room East",
-                            "sceneId": "Floor3D"
+                            "text": "To Book Stacks E",
+                            "sceneId": "Floor3F"
                         }
-
                     ]
                 },
                 "Floor3C": {
@@ -872,14 +885,39 @@
                         {
                             "pitch": -1.14,
                             "yaw": 158.03,
+                            "type": "info",
+                            "text": "This is a Quiet Zone for studying",
+                        },
+                        {
+                            "pitch": -1.14,
+                            "yaw": 158.03,
                             "type": "scene",
-                            "text": "To Great Room East",
+                            "text": "To Great Room Middle",
                             "sceneId": "Floor3D"
+                        },
+                        {
+                            "pitch": -1.14,
+                            "yaw": 158.03,
+                            "type": "scene",
+                            "text": "To Study Area",
+                            "sceneId": "Floor3A"
+                        },
+                        {
+                            "pitch": -1.14,
+                            "yaw": 158.03,
+                            "type": "scene",
+                            "text": "To Grad Hub",
+                            "sceneId": "Floor3B"
+                        },
+                        {
+                            "pitch": -1.14,
+                            "yaw": 158.03,
+                            "type": "scene",
+                            "text": "To Book Stacks C",
+                            "sceneId": "Floor3F"
                         }
-
                     ]
                 },
-
                 "Floor3D": {
                     "title": "Great Room East",
                     "autoLoad": true,
@@ -893,33 +931,239 @@
                             "pitch": -10.72,
                             "yaw": 239.44,
                             "type": "info",
-                            "text": "Quiet Zone Study Space"
+                            "text": "Murals"
                         },
                         {
                             "pitch": -3.47,
                             "yaw": 179.73,
                             "type": "scene",
                             "text": "To Great Room West",
-                            "sceneId": "Floor3C"
-                        },
-                        {
-                            "pitch": -4.79,
-                            "yaw": 57.99,
-                            "type": "scene",
-                            "text": "To Study Furniture",
-                            "sceneId": "Floor3B"
+                            "sceneId": "Floor3E"
                         },
                         {
                             "pitch": 0.81,
                             "yaw": 49.74,
                             "type": "scene",
-                            "text": "Books and Study Space",
-                            "sceneId": "Floor3A"
+                            "text": "To Great Room East",
+                            "sceneId": "Floor3C"
                         }
                     ]
                 },
                 "Floor3E": {
-                    "title": "Maps and Computers",
+                    "title": "Great Room West",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_maps.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -9.52,
+                            "yaw": -119.32,
+                            "type": "info",
+                            "text": "Plenty of spots to sit down in silence and study"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Great Room Middle",
+                            "sceneId": "Floor3D"
+                        }
+                    ]
+                },
+                "Floor3F": {
+                    "title": "Book Stacks C",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_maps.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -9.52,
+                            "yaw": -119.32,
+                            "type": "info",
+                            "text": "Look here for books to check out "
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Great Room East",
+                            "sceneId": "Floor3C"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Grad Hub",
+                            "sceneId": "FloorCB"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Study Area",
+                            "sceneId": "Floor3A"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Book Stacks F",
+                            "sceneId": "Floor3F2"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Book Stacks D",
+                            "sceneId": "Floor2F2"
+                        }
+                    ]
+                },
+                "Floor3F2": {
+                    "title": "Book Stacks F",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_maps.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -9.52,
+                            "yaw": -119.32,
+                            "type": "info",
+                            "text": "Look here for books to check out"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Book Stacks E",
+                            "sceneId": "Floor3F2"
+                        }
+                    ]
+                },
+                "Floor3G": {
+                    "title": "????",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_maps.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -9.52,
+                            "yaw": -119.32,
+                            "type": "info",
+                            "text": "Plenty of spots to sit down in silence and study "
+                        },
+                        {
+                            "pitch": -9.52,
+                            "yaw": -119.32,
+                            "type": "info",
+                            "text": "Scholar Development and Undergraduate Research Office "
+                        },
+                        {
+                            "pitch": -9.52,
+                            "yaw": -119.32,
+                            "type": "info",
+                            "text": "McNair Scholars Program"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Great Room Middle ",
+                            "sceneId": "Floor3D"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Book Stacks E",
+                            "sceneId": "Floor3F"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Grad Hub",
+                            "sceneId": "Floor3B"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Study Area",
+                            "sceneId": "Floor3A"
+                        }
+                    ]
+                },
+                "Floor4A": {
+                    "title": "Books and Study Area",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_maps.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -9.52,
+                            "yaw": -119.32,
+                            "type": "info",
+                            "text": "Books you can check out"
+                        },
+                        {
+                            "pitch": -9.52,
+                            "yaw": -119.32,
+                            "type": "info",
+                            "text": "Lots of spots to sit down and study "
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Floor 3",
+                            "sceneId": "Floor3A"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Floor 5",
+                            "sceneId": "Floor5A"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Computer Stations",
+                            "sceneId": "Floor4B"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Academic Learning Center",
+                            "sceneId": "Floor4C"
+                        }
+                    ]
+                },
+                "Floor4B": {
+                    "title": "Computer Stations",
                     "autoLoad": true,
                     "hfov": 110,
                     "pitch": -3,
@@ -935,19 +1179,96 @@
                             "text": "Computers for use"
                         },
                         {
-                            "pitch": -4.95,
-                            "yaw": 52.35,
-                            "type": "info",
-                            "text": "Maps"
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Books and Study Area",
+                            "sceneId": "Floor4A"
                         },
                         {
                             "pitch": -3.32,
                             "yaw": 108.51,
                             "type": "scene",
-                            "text": "Books and Study Space",
-                            "sceneId": "Floor3A"
+                            "text": "To Academic Learning Center",
+                            "sceneId": "Floor4C"
                         }
-
+                    ]
+                },
+                "Floor4C": {
+                    "title": "Academic Learning Center",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_maps.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -9.52,
+                            "yaw": -119.32,
+                            "type": "info",
+                            "text": "Computers for use"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Books and Study Area",
+                            "sceneId": "Floor4A"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Computer Stations",
+                            "sceneId": "Floor4B"
+                        }
+                    ]
+                },
+                "Floor5A": {
+                    "title": "Exhibit Gallery East",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_maps.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Floor 4",
+                            "sceneId": "Floor4A"
+                        },
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Exhibit Gallery West",
+                            "sceneId": "Floor5B"
+                        }
+                    ]
+                },
+                "Floor5B": {
+                    "title": "Exhibit Gallery West",
+                    "autoLoad": true,
+                    "hfov": 110,
+                    "pitch": -3,
+                    "yaw": 117,
+                    "type": "equirectangular",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f3_maps.jpg",
+                    //"hotSpotDebug": true,
+                    "hotSpots": [
+                        {
+                            "pitch": -3.32,
+                            "yaw": 108.51,
+                            "type": "scene",
+                            "text": "To Exhibit Gallery East",
+                            "sceneId": "Floor5A"
+                        }
                     ]
                 }
             }
