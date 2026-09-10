@@ -49,11 +49,35 @@
         .hotspot-right {
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="%234da6ff" stroke="white" stroke-width="1.5"/><path d="M8 12h8M12 8l4 4-4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>');
         }
+
+        .logo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 8px 0;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6); /* adjust or remove to match your gap color */
+            pointer-events: none; /* lets clicks/drags pass through to the panorama */
+            z-index: 5;
+        }
+        .logo-overlay img {
+            max-height: 40px;
+        };
     </style>
 </head>
 
 <body>
     <div id="panorama"></div>
+
+    // testing logo overlay
+    <div id="panorama-wrapper" style="position: relative; width: 750px; height: 500px;">
+        <div id="panorama" style="width: 100%; height: 100%;"></div>
+        <div class="logo-overlay">
+            <img src="your-logo.png" alt="Library logo">
+        </div>
+    </div>
+
     <script>
         // When done finding pitch and yaw, remove "const viewer ="
         const viewer = pannellum.viewer('panorama', {
@@ -70,7 +94,7 @@
                     "pitch": 0,
                     "yaw": 117,
                     "type": "equirectangular",
-                    "panorama": "???",
+                    "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/f1_sunflower_entrance.jpg",
                     //"hotSpotDebug": true,
                     "hotSpots": [
                         {
@@ -1336,15 +1360,15 @@
                 });
             });
         }
-
         const panoramaContainer = document.getElementById('panorama');
         new MutationObserver(enhanceHotspotAccessibility).observe(panoramaContainer, {
             childList: true,
             subtree: true
         });
-
         // Run once immediately in case hotspots are already in the DOM
         enhanceHotspotAccessibility();
+
+        
     </script>
 
 </body>
