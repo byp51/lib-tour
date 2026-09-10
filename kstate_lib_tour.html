@@ -16,8 +16,19 @@
             #panorama {
                 height: 200px;
                 width: 250px;
-
             }
+        }
+
+        /* Custom CSS for the nadir logo and tooltip */
+        .nadir-logo {
+            width: 120px !important;
+            height: 120px !important;
+            pointer-events: none; /* purely decorative, shouldn't block dragging */
+        }
+        .nadir-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         div.pnlm-tooltip span {
@@ -50,6 +61,8 @@
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="%234da6ff" stroke="white" stroke-width="1.5"/><path d="M8 12h8M12 8l4 4-4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>');
         }
 
+        /* could reuse for minimap */
+        /*
         .logo-overlay {
             position: absolute;
             bottom: 0;
@@ -57,26 +70,30 @@
             width: 100%;
             padding: 8px 0;
             text-align: center;
-            background: rgba(0, 0, 0, 0.6); /* adjust or remove to match your gap color */
-            pointer-events: none; /* lets clicks/drags pass through to the panorama */
+            background: rgba(0, 0, 0, 0.6); 
+            pointer-events: none; 
             z-index: 5;
         }
         .logo-overlay img {
             max-height: 40px;
         };
+        */
+
     </style>
 </head>
 
 <body>
     <div id="panorama"></div>
 
-    // testing logo overlay
+    <!-- testing logo overlay (could reuse for minimap) --> 
+    <!--
     <div id="panorama-wrapper" style="position: relative; width: 750px; height: 500px;">
         <div id="panorama" style="width: 100%; height: 100%;"></div>
         <div class="logo-overlay">
-            <img src="your-logo.png" alt="Library logo">
+            <img src="https://raw.githubusercontent.com/byp51/lib-tour/refs/heads/main/Library%20images/test_logo.jpg" alt="Library logo">
         </div>
     </div>
+    -->
 
     <script>
         // When done finding pitch and yaw, remove "const viewer ="
@@ -1310,6 +1327,25 @@
                 }
             }
         });
+
+        // adding logo to bottom of panorama
+        function addNadirLogo() {
+            viewer.addHotSpot({
+                "pitch": -90,
+                "yaw": 0,
+                "type": "info",
+                "text": "",
+                "cssClass": "nadir-logo",
+                "createTooltipFunc": function (hotSpotDiv) {
+                    hotSpotDiv.classList.add('nadir-logo');
+                    const img = document.createElement('img');
+                    img.src = 'https://raw.githubusercontent.com/byp51/lib-tour/refs/heads/main/Library%20images/test_logo.jpg';
+                    img.alt = '';
+                    hotSpotDiv.appendChild(img);
+                }
+            });
+        }
+        viewer.on('load', addNadirLogo);
 
         //---------------------------------------------------------------
         // For debugging: log the pitch and yaw of the mouse click
