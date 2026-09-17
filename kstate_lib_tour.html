@@ -38,24 +38,24 @@
         }
 
         /* Accessibility: visible focus indicator for keyboard users */
-        .pnlm-hotspot:focus {
+        .custom-hotspot:focus {
             outline: 3px solid #4da6ff;
             outline-offset: 2px;
         }
 
-        /* Custom icons for ALL hotspots, across every scene, in one place */
-        .pnlm-hotspot.pnlm-info-hotspot-sprite {
-            background-image: url('https://your-image-host.com/info-icon.png') !important;
-            background-size: contain !important;
-            width: 32px !important;
-            height: 32px !important;
+        /* -----------------------------------------------------------
+           Global hotspot icons - applied automatically to every scene
+           by the JavaScript loop below (assigns cssClass to each
+           hotspot based on its type). No changes needed anywhere in
+           any scene's "hotSpots" array.
+        ----------------------------------------------------------- */
+        .custom-info-icon {
+            background-image: url('https://raw.githubusercontent.com/byp51/lib-tour/refs/heads/main/Library%20images/info_icon.png');
         }
-        .pnlm-hotspot.pnlm-scene-hotspot-sprite {
-            background-image: url('https://your-image-host.com/scene-icon.png') !important;
-            background-size: contain !important;
-            width: 32px !important;
-            height: 32px !important;
+        .custom-scene-icon {
+            background-image: url('https://raw.githubusercontent.com/byp51/lib-tour/refs/heads/main/Library%20images/arrow_up.png');
         }
+
         /* Custom hotspot icons for scene navigation */
         .custom-hotspot {
             width: 32px;
@@ -110,7 +110,7 @@
 
     <script>
         // When done finding pitch and yaw, remove "const viewer ="
-        const viewer = pannellum.viewer('panorama', {
+        const pannellumConfig = {
             "default": {
                 "firstScene": "Floor1A",
                 "sceneFadeDuration": 1000
@@ -1357,7 +1357,26 @@
                     ]
                 }
             }
+        };
+
+        // ---------------------------------------------------------------
+        // Assign custom hotspot icons to every scene automatically.
+        // Runs once, before the viewer is created - no need to edit any
+        // individual scene's hotSpots array. Hotspots that already have
+        // their own cssClass (like the directional arrows) are left as-is.
+        // ---------------------------------------------------------------
+        Object.values(pannellumConfig.scenes).forEach(function (scene) {
+            if (!scene.hotSpots) return;
+            scene.hotSpots.forEach(function (hotspot) {
+                if (!hotspot.cssClass) {
+                    hotspot.cssClass = hotspot.type === 'scene'
+                        ? 'custom-hotspot custom-scene-icon'
+                        : 'custom-hotspot custom-info-icon';
+                }
+            });
         });
+
+        const viewer = pannellum.viewer('panorama', pannellumConfig);
 
         // adding logo to bottom of panorama
         function addNadirLogo() {
@@ -1394,7 +1413,7 @@
         // panorama container for any new elements being added and enhance
         // them as they appear.
         function enhanceHotspotAccessibility() {
-            document.querySelectorAll('#panorama .pnlm-hotspot').forEach(function (el) {
+            document.querySelectorAll('#panorama .custom-hotspot').forEach(function (el) {
                 if (el.hasAttribute('data-a11y-enhanced')) return;
                 el.setAttribute('data-a11y-enhanced', 'true');
 
