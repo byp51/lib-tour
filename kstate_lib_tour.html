@@ -37,12 +37,6 @@
             font-size: 15px;
         }
 
-        /* Accessibility: visible focus indicator for keyboard users */
-        .custom-hotspot:focus {
-            outline: 3px solid #4da6ff;
-            outline-offset: 2px;
-        }
-
         /* -----------------------------------------------------------
            Global hotspot icons - applied automatically to every scene
            by the JavaScript loop below (assigns cssClass to each
@@ -74,42 +68,13 @@
             background-image: url('https://assets.lib.k-state.edu/libguides/360photos/library/2026/arrow_right.png');
         }
 
-        /* could reuse for minimap */
-        /*
-        .logo-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 8px 0;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.6); 
-            pointer-events: none; 
-            z-index: 5;
-        }
-        .logo-overlay img {
-            max-height: 40px;
-        };
-        */
-
     </style>
 </head>
 
 <body>
     <div id="panorama"></div>
 
-    <!-- testing logo overlay (could reuse for minimap) --> 
-    <!--
-    <div id="panorama-wrapper" style="position: relative; width: 750px; height: 500px;">
-        <div id="panorama" style="width: 100%; height: 100%;"></div>
-        <div class="logo-overlay">
-            <img src="https://raw.githubusercontent.com/byp51/lib-tour/refs/heads/main/Library%20images/test_logo.jpg" alt="Library logo">
-        </div>
-    </div>
-    -->
-
     <script>
-        // When done finding pitch and yaw, remove "const viewer ="
         const pannellumConfig = {
             "default": {
                 "firstScene": "Floor1A",
@@ -211,7 +176,7 @@
                             "cssClass": "custom-hotspot hotspot-left"
                         },
                         {
-                            "pitch": -2.25,
+                            "pitch": -0.71,
                             "yaw": 85.83,
                             "type": "scene",
                             "text": "To Collaboration Rooms",
@@ -219,7 +184,7 @@
                             "cssClass": "custom-hotspot hotspot-left"
                         },
                         {
-                            "pitch": -0.53,
+                            "pitch": -0.71,
                             "yaw": 71.45,
                             "type": "scene",
                             "text": "To Big Collaboration Rooms",
@@ -841,12 +806,18 @@
                     "title": "Study Area",
                     "autoLoad": true,
                     "hfov": 110,
-                    "pitch": -3,
-                    "yaw": 117,
+                    "pitch": -1.66,
+                    "yaw": -110.49,
                     "type": "equirectangular",
                     "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/2026/f3_study_area.jpeg",
                     //"hotSpotDebug": true,
                     "hotSpots": [
+                        {
+                            "pitch": -1.66,
+                            "yaw": -110.49,
+                            "type": "info",
+                            "text": "Feel free to take a seat and study"
+                        },
                         {
                             "pitch": -1.25,
                             "yaw": 52.29,
@@ -991,8 +962,8 @@
                     "title": "Great Room Middle",
                     "autoLoad": true,
                     "hfov": 110,
-                    "yaw": 5,
-                    "pitch": -167,
+                    "yaw": -167,
+                    "pitch": 5,
                     "type": "equirectangular",
                     "panorama": "https://assets.lib.k-state.edu/libguides/360photos/library/2026/f3_great_room_middle.jpeg",
                     //"hotSpotDebug": true,
@@ -1426,9 +1397,6 @@
 
         // ---------------------------------------------------------------
         // Assign custom hotspot icons to every scene automatically.
-        // Runs once, before the viewer is created - no need to edit any
-        // individual scene's hotSpots array. Hotspots that already have
-        // their own cssClass (like the directional arrows) are left as-is.
         // ---------------------------------------------------------------
         Object.values(pannellumConfig.scenes).forEach(function (scene) {
             if (!scene.hotSpots) return;
@@ -1465,60 +1433,12 @@
         //---------------------------------------------------------------
         // For debugging: log the pitch and yaw of the mouse click
         //---------------------------------------------------------------
+        /*
         viewer.on('mousedown', function(event) {
             const coords = viewer.mouseEventToCoords(event);
             console.log('pitch:', coords[0], 'yaw:', coords[1]);
         });
-
-        // ---------------------------------------------------------------
-        // Accessibility: make hotspots reachable and operable by keyboard
-        // ---------------------------------------------------------------
-        // Pannellum rebuilds hotspot elements every time a scene loads, so
-        // rather than trying to catch a single event, we watch the
-        // panorama container for any new elements being added and enhance
-        // them as they appear.
-        function enhanceHotspotAccessibility() {
-            document.querySelectorAll('#panorama .custom-hotspot').forEach(function (el) {
-                if (el.hasAttribute('data-a11y-enhanced')) return;
-                el.setAttribute('data-a11y-enhanced', 'true');
-
-                // Join the normal Tab order and announce as a button
-                el.setAttribute('tabindex', '0');
-                el.setAttribute('role', 'button');
-
-                // Use the hotspot's own tooltip text as its accessible name
-                const label = el.textContent.trim();
-                if (label) {
-                    el.setAttribute('aria-label', label);
-                }
-
-                // Reveal the tooltip on keyboard focus the same way it
-                // reveals on mouse hover
-                el.addEventListener('focus', function () {
-                    el.dispatchEvent(new Event('mouseover'));
-                });
-                el.addEventListener('blur', function () {
-                    el.dispatchEvent(new Event('mouseout'));
-                });
-
-                // Enter or Space activates it, same as a mouse click
-                // (this covers scene jumps, URL links, and info tooltips)
-                el.addEventListener('keydown', function (e) {
-                    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
-                        e.preventDefault();
-                        el.click();
-                    }
-                });
-            });
-        }
-        const panoramaContainer = document.getElementById('panorama');
-        new MutationObserver(enhanceHotspotAccessibility).observe(panoramaContainer, {
-            childList: true,
-            subtree: true
-        });
-        // Run once immediately in case hotspots are already in the DOM
-        enhanceHotspotAccessibility();
-
+        */
         
     </script>
 
